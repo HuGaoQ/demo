@@ -50,6 +50,7 @@
             <version>${mysql.connector.java.version}</version>
         </dependency>
 
+        <!-- dynamic多数据源配置 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
