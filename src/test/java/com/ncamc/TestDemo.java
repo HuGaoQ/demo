@@ -1,5 +1,6 @@
 package com.ncamc;
 
+import com.ncamc.service.TransactionService;
 import com.ncamc.service.myMethodService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,9 +16,14 @@ public class TestDemo {
     @Resource
     private myMethodService myMethodService;
 
+    @Resource
+    private TransactionService transactionService;
+
     @Test
     public void demo() {
         myMethodService.myMethod();
+        transactionService.transferMoney("AccountA", "AccountB", 500);
+        transactionService.transferMoney("AccountA", "AccountB", 1500);
     }
 
 }
