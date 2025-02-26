@@ -80,7 +80,8 @@
         <!-- Spring Boot starter (optional if you're using Spring Boot) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>h</dependency>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.yaml</groupId>
