@@ -1,13 +1,11 @@
 package com.ncamc.controller;
 
+import com.ncamc.base.BaseController;
 import com.ncamc.zip.utils.WebUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.CRC32;
@@ -17,13 +15,7 @@ import java.util.zip.ZipOutputStream;
 
 @RestController
 @RequestMapping("/")
-public class DemoController {
-
-    @Resource
-    private HttpServletRequest request;
-
-    @Resource
-    private HttpServletResponse response;
+public class DemoController extends BaseController {
 
     @GetMapping
     public void demo() throws IOException {

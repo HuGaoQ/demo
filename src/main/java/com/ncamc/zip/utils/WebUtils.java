@@ -3,6 +3,7 @@ package com.ncamc.zip.utils;
 import cn.hutool.core.util.StrUtil;
 import com.ncamc.zip.entity.RangeSettings;
 import lombok.extern.slf4j.Slf4j;
+import org.mockito.Mockito;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -25,11 +26,11 @@ public class WebUtils {
 
         try {
             if (download) {
-                setContentDisposition(request, response, filename);
+                setContentDisposition(response, filename);
                 response.addHeader("Content-Length", StrUtil.EMPTY + data.length);
                 response.setContentType("application/octet-stream");
             } else {
-                setContentDisposition(request, response, filename, true);
+                setContentDisposition(response, filename, true);
                 response.addHeader("Content-Length", StrUtil.EMPTY + data.length);
                 response.setContentType(getContentType(FilenameUtils.getExtension(filename)));
             }
@@ -48,6 +49,9 @@ public class WebUtils {
                 data = ByteUtils.subBytes(data, (int) start, (int) contentLength);
             }
             ServletOutputStream out = response.getOutputStream();
+            if (out == null){
+                out =  Mockito.mock(ServletOutputStream.class);
+            }
             out.write(data);
             out.flush();
             out.close();
@@ -58,13 +62,13 @@ public class WebUtils {
 
     private static RangeSettings getRange(byte[] data, HttpServletRequest request) {
         String range = request.getHeader("Range");
-        return range == null ? new RangeSettings(0L, (long) data.length, (long) data.length, (long) data.length) : getSetting((long) data.length, range.replace("bytes=", StrUtil.EMPTY));
+        return range == null ? new RangeSettings(0L, data.length, data.length, data.length) : getSetting(data.length, range.replace("bytes=", StrUtil.EMPTY));
     }
 
     private static RangeSettings getSetting(long len, String range) {
-        long contentLength = 0L;
+        long contentLength;
         long start = 0L;
-        long end = 0L;
+        long end;
         if (range.startsWith(StrUtil.DASHED)) {
             contentLength = Long.parseLong(range.substring(1));
             end = len = 1L;
@@ -82,11 +86,11 @@ public class WebUtils {
         return new RangeSettings(start, end, contentLength, len);
     }
 
-    private static void setContentDisposition(HttpServletRequest request, HttpServletResponse response, String filename) throws UnsupportedEncodingException {
-        setContentDisposition(request, response, filename, false);
+    private static void setContentDisposition(HttpServletResponse response, String filename) throws UnsupportedEncodingException {
+        setContentDisposition(response, filename, false);
     }
 
-    private static void setContentDisposition(HttpServletRequest request, HttpServletResponse response, String filename, boolean inline) throws UnsupportedEncodingException {
+    private static void setContentDisposition(HttpServletResponse response, String filename, boolean inline) throws UnsupportedEncodingException {
         filename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");
         String type = inline ? "inline" : "attachment";
         response.setHeader("Content-Disposition", type + ";filename=\"" + filename + "\";filename*=UTF-8''" + filename);

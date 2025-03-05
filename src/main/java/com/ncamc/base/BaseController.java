@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 public class BaseController {
 
     @Resource
-    protected static HttpServletRequest request;
+    protected HttpServletRequest request;
 
     @Resource
-    protected static HttpServletResponse response;
+    protected HttpServletResponse response;
 
 }
