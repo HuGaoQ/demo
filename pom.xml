@@ -122,6 +122,12 @@
             <artifactId>magic-api-spring-boot-starter</artifactId>
             <version>2.1.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.2.10</version>
+        </dependency>
     </dependencies>
 
     <build>
